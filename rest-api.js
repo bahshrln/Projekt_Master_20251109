@@ -8,7 +8,8 @@ let corsOptions = {
   origin: 'http://localhost:53000',
   optionsSuccessStatus: 200 
 }
-
+//"C:\Users\britt\Documents\SQlite\Masterprojekt_20251101.db"
+//C:\Users\britt\Documents\HS Mainz 2025\Master\Projekt_Master_20251109\locations.db
 // SQLite-Datenbankverbindung herstellen
 const db = new sqlite3.Database('C:\Users\britt\Documents\HS Mainz 2025\Master\Projekt_Master_20251109\locations.db');
 
