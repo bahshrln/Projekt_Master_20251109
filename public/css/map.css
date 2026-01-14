@@ -1,0 +1,23 @@
+
+div#myMap {
+  height: 400px;
+  width: 100%;
+  background-color: lightgrey;
+  display: grid;
+  align-items: center;
+  text-align: center;
+}
+
+.leaflet-control-layers-expanded {
+  text-align: left;
+}
+
+.basemap_control {
+  text-align-last:auto;
+  padding-left: 10px;
+}
+
+#legende, #legende_button {
+  text-align: right;
+  margin-top: -30px;   
+}

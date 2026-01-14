@@ -1,0 +1,11 @@
+# Ignore log files
+*.log
+*.db
+*.json
+*.csv
+*.png
+*.jpg
+
+# Ignore temp folders
+temp/ 
+node_modules/

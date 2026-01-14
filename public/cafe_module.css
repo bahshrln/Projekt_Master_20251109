@@ -1,0 +1,30 @@
+/*CSS-Skripte*/
+@import url(./css/dashboard-styles.css);
+@import url(./css/highcharts.css);
+@import url(./css/cards.css);
+@import url(./css/nav.css);
+@import url(./css/OverPassLayer.css);
+/*@import url(./css/MarkerCluster.Default.css);
+@import url(./css/MarkerCluster.css);*/
+@import url(./css/css/all.css);
+@import url(./css/css/brands.css);
+@import url(./css/css/fontawesome.css);
+@import url(./css/css/regular.css);
+@import url(./css/css/solid.css);
+@import url(./css/css/svg-with-js.css);
+@import url(./css/css/v4-font-face.css);
+@import url(./css/css/v4-shims.css);
+@import url(./css/css/v5-font-face.css);
+/*@import url(./css/webfonts/fa-brands-400.ttf);
+@import url(./css/webfonts/fa-brands-400.woff2);
+@import url(./css/webfonts/fa-regular-400.ttf);
+@import url(./css/webfonts/fa-regular-400.woff2);
+@import url(./css/webfonts/fa-solid-900.ttf);
+@import url(./css/webfonts/fa-solid-900.woff2);
+@import url(./css/webfonts/fa-v4compatibility.ttf);
+@import url(./css/webfonts/fa-v4compatibility.woff2);*/
+@import url(./css/leaflet-routing-machine.css);
+@import url(./dist/leaflet-wms-legend-master/leaflet.wmslegend.css)
+
+
+

@@ -1,0 +1,29 @@
+/* Navigationsleiste */
+.tab {
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-weight: bold;
+}
+
+.tab button:hover,
+.tab .active {
+  background-color: #ddd;
+}
+
+/* Inhalt der Tabs */
+.tabContent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}

@@ -1,0 +1,276 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+h1,
+h2 {
+  text-align: center;
+  font-family: "Agency FB", "fantasy", sans-serif;
+ }
+
+ h1{ 
+   color: rgba(102, 102, 102);
+   height:max-content;
+ }
+ 
+ h1>.word {
+  color: rgba(179, 179, 179);
+ }
+
+p {
+  text-align: left;
+}
+
+select,
+textarea {
+  width: 100%;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="online"],
+input[type="tel"] {
+  width: 25%;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="online"],
+input[type="tel"],
+select,
+textarea {
+  width: 100%;
+  padding: 4px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input[type="button"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: auto;
+}
+
+input[type="button"]:hover {
+  background-color: #45a049;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="online"],
+input[type="tel"],
+textarea#description, select {
+  background-color:ghostwhite;
+  padding: 10px 20px;
+  margin: 5px 0;
+  border:#4CAF50 1px solid;
+  border-radius: 4px;
+}
+
+input[type="text"]:hover, 
+input[type="number"]:hover,
+input[type="online"]:hover,
+input[type="tel"]:hover,
+textarea:hover, select:hover {
+  background-color:lightsteelblue;
+}
+
+input[type="text"]:focus, 
+input[type="number"]:focus,
+input[type="online"]:focus,
+input[type="tel"]:focus,
+textarea:focus, select:focus {
+  border-style: hidden;
+}
+
+div.cell_row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 3;
+}
+
+input.cell {
+  flex-grow: 1;
+}
+
+input#city, input#up_city {
+  flex-grow: 2;
+  margin-left: 3px;
+  width: 150%;
+}
+
+.poiInput {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.actions {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.left {
+  text-align: left;
+}
+
+#userCoordinates {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  font-size: 80%;
+  color: grey;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* POI Input */
+.poiInput {
+  border-collapse: collapse;
+  width: 100%;
+  padding: 4px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  width: 100%;
+}
+
+fieldset {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  padding: 3px;
+  margin: 5px;
+}
+
+#viewPoi {  
+  border-radius: 4px;
+  background-color: ghostwhite;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  margin: auto;
+  padding: 20px;
+}
+
+#besonders, #geo {
+  border:#4CAF50 1px solid;
+  border-radius: 4px;
+  padding:10px;
+  margin-top: 15px;
+}
+
+.type {
+  font-family: "Agency FB", "fantasy", sans-serif;
+  font-size: 1.5em;
+}
+
+#tab_open {
+  border:#4CAF50 1px solid;
+  border-radius: 4px;
+  padding:10px;
+}
+
+footer {
+  max-height: 100px;
+  background-color: #4CAF50;
+  color: ghostwhite;
+  padding: 15px;
+  text-align: end;
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .card {
+    /* Add shadows to create the "card" effect */
+    max-width: 100%;
+    min-height: 360px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 3px;
+    margin: 5px;
+  }
+
+  #cardsPoiList>.card {
+    flex-basis: auto;
+  }
+  
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .card {
+    /* Add shadows to create the "card" effect */
+    max-width: 50%;
+    min-height: 360px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 3px;
+    margin: 5px;
+  }
+  #cardsPoiList>.card {
+    flex-basis: auto;
+  }
+  
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .card {
+    /* Add shadows to create the "card" effect */
+    max-width: 30%;
+    min-height: 360px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 3px;
+    margin: 5px;
+  }
+
+  #cardsPoiList>.card {
+    flex-grow: 3;
+    flex-basis: auto;
+  }
+  
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  
+  .card {
+    /* Add shadows to create the "card" effect */
+    max-width: 250px;
+    min-height: 360px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 3px;
+    margin: 5px;
+  }
+  
+  #cardsPoiList>.card {
+    flex-grow: 3;
+    flex-basis: auto;
+  }
+  
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  #cardsPoiList>.card {
+    flex-grow: 4;
+    flex-basis: auto;
+  }
+  
+}

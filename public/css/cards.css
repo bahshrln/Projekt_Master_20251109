@@ -1,0 +1,84 @@
+/* CARD POI Listentabelle */
+
+#cardPoiList, #cafePoiList {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  padding: 4px;
+  margin: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.card {
+  /* Add shadows to create the "card" effect */
+  min-width: 25%;
+  min-height: 360px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  padding: 3px;
+  margin: 5px;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 2px;
+  margin: 5px;
+}
+
+.ico_btn_view, .ico_btn_edit {
+  background-color: #dbe0db !important;
+  color: white !important;
+  padding: 10px 10px;
+  margin: 10px;
+  border: none;
+  border-radius: 50px !important;
+  cursor: pointer;
+  width: auto;
+}
+
+.ico_btn_view:hover, .ico_btn_edit:hover {
+  background-color: rgb(192, 196, 192) !important;
+}
+
+#cards_table {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.veg, .glut, .break, .lgb, .ev, .hh, .out {
+  font-family: "Agency FB", "fantasy", sans-serif;
+  font-size: 1.5em;
+} 
+
+/* .veg {
+  color: rgb(6, 157, 6);
+}
+
+.glut{
+  color: rgb(255, 165, 0);
+}
+
+.break{
+  color: yellow;
+}
+
+.lgb{
+  color: rgb(232, 68, 232);
+}
+
+.ev{
+  color: rgb(66, 66, 236);
+}
+
+.hh{
+  color: rgb(251, 40, 40);
+}
+
+.out{
+  color: rgb(7, 158, 209);
+} */

@@ -1,0 +1,408 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+  <!-- Im Head müssen externe und lokale JS/CSS-Dateien geladen werden -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="icon" href="./img/coffee-cup-logo-coffee-shop-icon-design-free-vector.ico" type="image/x-icon">
+  <title>Barrieren</title>
+
+  <!-- Leaflet CSS und JS einsetzen vor Aufruf und Map-Div -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+ 
+  <script type="text/javascript" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>  
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster-src.js"></script>  
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster-src.js.map"></script>  
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+  <script src="./dist/leaflet.markercluster-src.js"></script>
+  
+  <!-- Externes CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- CSS und JS -->
+  <link rel="stylesheet" href="cafe_module.css">
+  <script type="text/javascript" src="dashboard-data.js"></script>
+  <script type="text/javascript" src="dashboard-leaflet.js"></script>
+  <script type="module" src="cafe_module.js"></script>
+
+  <!-- Fontawesome -->
+  <link rel='stylesheet' id='font-awesome-css' href='https://use.fontawesome.com/releases/v5.12.0/css/all.css?wpfas=true' type='text/css' media='all' />
+  
+  <!-- Overpasslayer  -->
+  <script src="https://unpkg.com/overpass-layer/dist/overpass-layer.js"></script>
+
+  <!-- jquery einbinden über googleapis -->
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+  <!-- Geolocation API google maps-->
+  <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
+
+  <!-- Highchart -->
+  <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+  <script type="text/javascript" src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script type="text/javascript" src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script type="text/javascript" src="https://code.highcharts.com/modules/accessibility.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/default-passive-events"></script>
+ 
+</head>
+
+<!--<body>-->
+<body>
+  <h1>Individualisierung von Erreichbarkeitsanalysen von <span class="word"></span>Seniorinnen und Senioren</span></h1>
+  <h2>Rollendefinitionen auf Basis von Milieus</h2>
+
+<!-- ############### MAP ############### -->
+  <!-- Div, in welches die Karte geladen wird -->  
+  <!--<div id="legende_button"><input type="button" value="Legende" onclick="makeChange();"></div>
+  <div id="legende"><img src="./img/Legende_gesamt.png" alt="legend"/></div>-->
+  <div id="myMap" style="height: 400px;">Noch keine Karte geladen</div>
+
+<!-- ############### TABS ############### -->
+  <!-- Menü der Anwendung (Übersicht der Tabs/Reiter) -->
+  <div class="tab">
+    <!--<button id="newPoiLink" class="tabLink" onclick="openTab('newPoi')">Neues Café</button>-->
+    <button id="viewPoiLink" class="tabLink" onclick="openTab('viewPoi')">Profil ansehen</button>
+    <!--<button id="updatePoiLink" class="tabLink" onclick="openTab('updatePoi')">Café ändern</button>-->
+    <button id="existingPoisLink" class="tabLink" onclick="openTab('existingPois')">Alle Profile</button>
+    <button id="highchartLink" class="tabLink" onclick="openTab('highchart')">Highcharts Cafés</button>
+    <!--<button id="newMapLink" class="tabLink" onclick="openTab('newMap')">Weitere Ziele</button>-->
+  </div>
+
+<!-- ############### TAB NEU ############### -->
+  <!-- Reiter für das Hinzufügen neuer Cafés --> 
+  <!-- <div id="newPoi" class="tabContent">
+    <div class="poiInput">
+      <div>        
+        <p>Name:</p>
+        <p><input type="text" placeholder="Die kleine Kneipe" value="" id="name"></p>
+      </div>
+      <div>        
+        <p>Label für Typ:</p>
+        <p><input type="text" placeholder="Kneipe" value="" id="type_label"></p>
+      </div>
+      <div>
+        <p>Typ:</p>
+        <p><select id="type"> Typ: 
+            <option value="bar">Bars</option>
+            <option value="biergarten">Biergärten</option>
+            <option value="bistro">Bistros</option>
+            <option value="brauhaus">Brauhäuser</option>
+            <option value="cafe">Cafés</option>
+            <optgroup id="sub_type_cafe">
+              <option value="cafe_mensa">Mensa</option>
+              <option value="cafe_scand">Skandinavisch</option>
+              <option value="coffeeshop">Coffeeshop</option>
+              <option value="internet_cafe">Internetcafés</option>
+            </optgroup>                                 
+            <option value="cocktailbar">Cocktailbars</option>
+            <option value="friseur">Friseur-Lounges</option>
+            <option value="grill">Grills</option>
+            <option value="kneipe" selected>Kneipen</option>
+            <option value="lounge">Lounges</option>            
+            <option value="nightclub">Nachtclubs</option>            
+            <option value="restaurant">Restaurants</option>              
+            <optgroup id="sub_type_restaurant">
+              <option value="restaurant_german">Deutsche Küche</option>
+              <option value="restaurant_mexican">Mexikanische Küche</option>
+              <option value="restaurant_italian">Italienische Küche</option>
+              <option value="restaurant_asian">Asiatische Küche</option>
+              <option value="restaurant_portugese">Portugiesische Küche</option>
+              <option value="restaurant_arabian">Arabische Küche</option>
+            </optgroup>                
+            <option value="shishabar">Shishabars</option>
+            <option value="teehouse">Teehäuser</option>
+            <option value="vine">Weinlokal</option>
+            <option value="misc">Sonstiges</option>
+          </select>
+        </p>
+      </div>
+      <div>
+        <label for="street">Straße: </label>
+        <input type="text" placeholder="An der Rheinpromenade 46" value="" id="street">
+      </div>
+      <div>
+        <p><label for="city">PLZ und Ort: </label></p>   
+      </div>
+      <div class="cell_row">        
+        <input class="cell" maxlength="5" type="text" placeholder="67575" value="" id="plz"><input class="cell" type="text" placeholder = "Eich" value="" id="city">      
+      </div>
+      <div>
+        <p><label for="distance">Entfernung zur Altstadt: </label></p>
+        <p><input type="text" placeholder="Entfernung zur Altstadt" id="distance"></p>
+      </div>
+      <div>
+        <table id="tab_open">
+          <tr>
+            <td  colspan="3">Öffnungszeiten:</td>
+          </tr>
+          <tr>
+            <th>Wochentag</th><th>geöffnet ab</th><th>schließt um</th>
+          </tr>
+          <tr>
+            <td>Montag</td><td><input type="text" placeholder="00:00" id="moopen"></td><td><input type="text" placeholder="00:00" id="moclosed"></td>
+          </tr>
+          <tr> 
+            <td>Dienstag</td><td><input type="text" placeholder="18:00" id="diopen"></td><td><input type="text" placeholder="22:00" id="diclosed"></td>
+          </tr>
+          <tr>
+            <td>Mittwoch</td><td><input type="text" placeholder="18:00" id="miopen"></td><td><input type="text" placeholder="22:00" id="miclosed"></td>
+          </tr>
+          <tr>
+            <td>Donnerstag</td><td><input type="text" placeholder="00:00" id="doopen"></td><td><input type="text" placeholder="00:00" id="doclosed"></td>
+          </tr>
+          <tr>
+            <td>Freitag</td><td><input type="text" placeholder="18:00" id="fropen"></td><td><input type="text" placeholder="22:00" id="frclosed"></td>
+          </tr>
+          <tr>
+            <td>Samstag</td><td><input type="text" placeholder="00:00" id="saopen"></td><td><input type="text" placeholder="00:00" id="saclosed"></td>
+          </tr>
+          <tr>
+            <td>Sonntag</td><td><input type="text" placeholder="12:00" id="soopen"></td><td><input type="text" placeholder="22:00" id="soclosed"></td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <p><h4>Auf einen Blick: </h4></p>
+      </div>
+      <div>
+        <p><label for="description">Beschreibung: </label></p>
+        <p><textarea id="description" placeholder="Bitte beschreiben Sie kurz die Location."></textarea></p>
+      </div>
+      <div>
+          <p><label for="tel">Telefon: </label></p>
+          <p><input type="tel" placeholder="06246 9076748" id="tel"></p>
+      </div>
+      <div>
+          <p><label for="online">Online: </label></p>
+          <p><input type="online" placeholder="www.beispiel.com" id="online"></p>
+      </div>
+      <table>
+        <tr>
+          <th class="left"><label for="latitude">Breitengrad: </label></th><th class="left"><label for="longitude">Längengrad: </label></th>
+        </tr>
+        <tr></tr>
+          <td><input type="text" placeholder="49.76449661604056" value="" maxlength="10" id="latitude"></td><td><input type="text" placeholder="8.431942990748993" value="" maxlength="10" id="longitude"></td>
+        </tr>
+      </table>
+      <div>
+        <h2>Besondere Angebote: </h2>  
+      </div>          
+      <div>
+        <input type="checkbox" id="vegan" name="vegan" value="vegan">
+        <label for="vegan"> Veganes Angebot</label><br>
+        <input type="checkbox" id="glutenfree" name="glutenfree" value="glutenfree">
+        <label for="glutenfree"> Glutenfreies Angebot</label><br>
+        <input type="checkbox" id="breakfast" name="breakfast" value="breakfast">
+        <label for="breakfast"> Frühstücksangebot</label><br>
+        <input type="checkbox" id="lgbtq" name="lgbtq" value="lgbtq">
+        <label for="lgbtq"> LGBTQ-Angebote</label><br>
+        <input type="checkbox" id="events" name="events" value="events">
+        <label for="events"> Event-Angebote (Konzert, Lesung, Vortrag, Live-Musik u.ä.)</label><br>
+        <input type="checkbox" id="happyhour" name="happyhour" value="happyhour">
+        <label for="happyhour"> Happy Hour-Angebote</label><br>
+        <input type="checkbox" id="outside" name="outside" value="outside">
+        <label for="outside"> Außengastro</label><br><br>
+      </div>           
+    </div>
+
+    <div class="actions">
+      <input type="button" value="Senden" onclick="postNewLocation().openTab('existingPois')">
+    </div>-->
+
+    <!-- Div, in welchem gemeldet wird, welcher POI hinzugefügt wurde -->
+    <!--<div id="result"></div>
+  </div> -->
+
+  <!-- ############### TAB VIEW #################-->
+   <div id="viewPoi" class="tabContent" onload="getDataPoi(id);"></div>
+   
+  <!-- ############### TAB ÄNDERN ############### -->
+  <!-- Reiter für das Ändern von Cafés -->   
+  <!--<div id="updatePoi" class="tabContent" onload="setData();">
+    <form id="poiInfo"></form>-->
+    
+    <!-- Div, in welchem gemeldet wird, welcher POI hinzugefügt wurde -->
+    <!--<div id="changes"></div>
+  </div>-->
+
+  <!-- ############### TAB SUCHE UND ERGEBNISSE ############### -->
+  <!-- Reiter für das Anzeigen existierender Cafés -->
+  <div id="existingPois" class="tabContent">
+  <!-- Einfache Suche -->
+    <fieldset>
+      <div class="actions simple_search">
+        <p><label for="search">Suchbegriff in Datenbank: </label>
+        <input type="text" id="search"></p>
+        <input type="button" value="Lese Datenbank" onclick="getLocations()">
+      </div>
+    </fieldset>
+
+  <!-- Erweiterte Suche -->   
+    <!-- <fieldset> 
+      <div class="actions extended_search">
+        <p><label for="searchPerson">Person:</label>
+        <input type="text" id="searchPerson"></p>
+        <p><label for="searchType">Art:</label>
+           <select id="searchType"> Typ: 
+            <option value="" selected>bitte auswählen</option>
+            <option value="bar">Bars</option>
+            <option value="biergarten">Biergärten</option>
+            <option value="bistro">Bistros</option>
+            <option value="brauhaus">Brauhäuser</option>
+            <option value="cafe">Cafés</option>
+            <optgroup id="sub_type_cafe">
+              <option value="cafe_mensa">Mensa</option>
+              <option value="cafe_scand">Skandinavisch</option>
+              <option value="coffeeshop">Coffeeshop</option>
+              <option value="internet_cafe">Internetcafés</option>
+            </optgroup>                                 
+            <option value="cocktailbar">Cocktailbars</option>
+            <option value="friseur">Friseur-Lounges</option>
+            <option value="grill">Grills</option>
+            <option value="kneipe">Kneipen</option>
+            <option value="lounge">Lounges</option>            
+            <option value="nightclub">Nachtclubs</option>            
+            <option value="restaurant">Restaurants</option>              
+            <optgroup id="sub_type_restaurant">
+              <option value="restaurant_german">Deutsche Küche</option>
+              <option value="restaurant_mexican">Mexikanische Küche</option>
+              <option value="restaurant_italian">Italienische Küche</option>
+              <option value="restaurant_asian">Asiatische Küche</option>
+              <option value="restaurant_portugese">Portugiesische Küche</option>
+              <option value="restaurant_arabian">Arabische Küche</option>
+            </optgroup>                
+            <option value="shishabar">Shishabars</option>
+            <option value="teehouse">Teehäuser</option>
+            <option value="vine">Weinlokal</option>
+            <option value="misc">Sonstiges</option>
+          </select>
+        </p> 
+        <p><label for="searchHaushaltsnetto">Haushaltsnetto:</label>
+        <input type="text" id="searchStreet"></p>
+        <p><label for="searchPlz">PLZ:</label>
+        <input type="text" id="searchPlz"></p>
+        <p><label for="searchCity">Ort:</label>
+        <input type="text" id="searchCity"></p>
+        <p><label for="searchVegan">Vegan:</label>
+        <input type="checkbox" id="searchVegan" name="searchVegan" value="searchVegan"></p>
+        <p><label for="searchGlutenfree">Glutenfrei:</label>
+        <input type="checkbox" id="searchGlutenfree" name="searchGlutenfree" value="searchGlutenfree"></p>
+        <p><label for="searchBreakfast">Frühstück:</label>
+        <input type="checkbox" id="searchBreakfast" name="searchBreakfast" value="searchBreakfast"></p>
+        <p><label for="searchLgbtq">LGBTQ:</label>
+        <input type="checkbox" id="searchLgbtq" name="searchLgbtq" value="searchLgbtq"></p>
+        <p><label for="searchEvents">Events:</label>
+        <input type="checkbox" id="searchEvents" name="searchEvents" value="searchEvents"></p>
+        <p><label for="searchHappyhour">Happy Hour:</label>
+        <input type="checkbox" id="searchHappyhour" name="searchHappyhour" value="searchHappyhour"></p>
+        <p><label for="searchOutside">Außengastro:</label>
+        <input type="checkbox" id="searchOutside" name="searchOutside" value="searchOutside"></p>
+                
+        <input type="button" value="Erweiterte Suche" onclick="getLocationsExtended()">
+      </div>
+    </fieldset>
+    <fieldset> 
+      <div class="actions">
+        <input type="button" value="Datenbank zurücksetzen" onclick="resetLocations()">
+        <input type="button" value="Lösche Datenbank" onclick="deleteLocations()">
+        <input type="button" value="Lese JSON-Datei" onclick="getLocationsFromFile()">
+      </div>
+    </fieldset>-->
+
+  <!-- Div, in welchem alle Profile angezeigt werden -->
+    <div id="cardPoiList"></div>
+  </div>
+
+  <!-- ############### TAB CHARTS ############### -->
+  <!-- Reiter für das Anzeigen von Highcharts -->
+  <div id="highchart" class="tabContent">
+    <p class="highcharts-description">
+          Das Chart zeigt die Anzahl von Angeboten je nach Art des Ortes in Mainz.
+      </p>
+      <p><input type="button" id="chart_button" value="Chart laden" /></p>
+    <figure class="highcharts-figure">
+      <div id="hc_container" ></div>
+    </figure>
+  </div>
+  <!-- ############### TAB Maps ############ -->
+  <!-- Reiter für weitere Karten zum Anzeigen der Daten aus dem Layer grüne Punkte in Mainz--> 
+  <div id="newMap" class="tabContent">
+    <!--<div id="map">Noch keine Karte geladen</div>-->
+    <!--<div id="map" style="height: 400px;"></div>-->
+    <div id="cafePoiList"></div>
+    <div id="userCoordinates"></div>
+  </div>
+
+  
+<!-- ############### FOOTER ############### -->
+  <footer>
+    <!-- Div, in welchem die Position des Users angezeigt wird -->
+    <div id="copyright">&#169; Hochschule Mainz 2025</div>
+  </footer>
+
+  <!-- JavaScript für die Anzeige der Tabs/Reiter und Start der Anwendung -->
+  <script>
+    // Anzeige des Start-Tabs, Ladern der User-Koordinaten und Anzeige
+    // von Locations in der Datenbank auf dem Server über REST
+        
+    window.onload = () => {
+      openTab('existingPois');
+      getUserCoordinates();
+      getDemografie();
+      getLocationsFromWfsJson();
+    };
+    window.addEventListener('vite:preloadError', (event) => {
+    window.reload() // for example, refresh the page
+})
+
+    // Funktion, welche alle Tabs im HTML versteckt, bis auf den Tab mit
+    // Namen "name"
+    function openTab(name) {
+      var i, tabContent, tabLinks;
+
+      // Alle Tabs verstecken und auf inactive stellen
+      tabContent = document.getElementsByClassName("tabContent");
+      for (i = 0; i < tabContent.length; i++) {
+        if(tabContent[i]){
+          tabContent[i].style.display = "none";
+        }
+        
+      }
+      tabLink = document.getElementsByClassName("tabLink");
+      for (i = 0; i < tabLink.length; i++) {
+        if(tabLink[i]) {
+          tabLink[i].className = tabLink[i].className.replace(" active", "");
+          console.log('tablinks: '+i);
+        }        
+      }
+
+      // Nur Tag von dem Event auf active stellen
+      document.getElementById(name).style.display = "block";
+      document.getElementById(name + 'Link').className += " active";
+    }
+
+    function addressToCoord() {
+      let geocoder = new google.maps.Geocoder();
+      let address = jQuery('#street').val() + ", " + jQuery('#plz').val() + " " + jQuery('#city').val();
+      console.log("Adresse zum Geokodieren: " + address);
+
+      geocoder.geocode( { 'address': address}, function(results, status) {
+
+      if (status == google.maps.GeocoderStatus.OK) {
+          let latitude = results[0].geometry.location.lat();
+          let longitude = results[0].geometry.location.lng();
+          jQuery('#latitude').val(latitude);
+          jQuery('#longitude').val(longitude);
+          } 
+      }); 
+    }
+    
+    
+  </script>  
+ 
+</body
