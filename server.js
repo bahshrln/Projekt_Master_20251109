@@ -26,7 +26,7 @@ ex.use(express.static('public'));
 
 // Stellt eine REST-API unter /locations zur Verfügung, um auf die Datenbank
 // zugreifen zu können
-ex.use('/persona', restApi);
+ex.use('/locations', restApi);
 
 // Setze den Port und erzeuge den Server
 const port = 53000;

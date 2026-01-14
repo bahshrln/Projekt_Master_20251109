@@ -131,7 +131,7 @@ function getDemografie() { // vorher getLocations
   if (searchString != '') {
     console.log('[getDemografie] Suche nach String:', searchString);
   }
-  getData(`/persona/?search=${searchString}`);
+  getData(`/locations/?search=${searchString}`);
 }
 
 // Holen der Suchbegriffe
@@ -169,12 +169,12 @@ function getSingleLocation(searchId) {
 // mit Beispieldaten
 function resetDemografie() {
   console.log('[resetDemografie] Zurücksetzen der Datenbank über REST')
-  getData(`/persona/reset`);
+  getData(`/locations/reset`);
 }
 
 // Löschen der Datenbank auf dem Server und leeren der Variable poiList
 function deleteDemografie() {
-  fetch('/persona',
+  fetch('/locations',
     { method: 'DELETE' }).then(response => {
       // Analysiere die Response und frage JSON-Daten an
       if (!response.ok) {
@@ -238,77 +238,6 @@ function getDataPerson(person_id) { //getDataPoi
       <p>Konsum: ${poi.Konsum}</p> 
       <p>Lebensmotto: ${poi.Lebensmotto}</p>         
     </div>
-    
-    <!--<div>
-      <table id="tab_open">
-        <tr>
-          <td  colspan="3">Barrieren</td>
-        </tr>
-        <tr>
-          <th>Wochentag</th><th>geöffnet ab</th><th>schließt um</th>
-        </tr>
-        <tr>
-          <td>Montag</td><td>${poi.moopen}</td><td>${poi.moclosed}</td>
-        </tr>
-        <tr> 
-          <td>Dienstag</td><td>${poi.diopen}</td><td>${poi.diclosed}</td>
-        </tr>
-        <tr>
-          <td>Mittwoch</td><td>${poi.miopen}</td><td>${poi.miclosed}</td>
-        </tr>
-        <tr>
-          <td>Donnerstag</td><td>${poi.doopen}</td><td>${poi.doclosed}</td>
-        </tr>
-        <tr>
-          <td>Freitag</td><td>${poi.fropen}</td><td>${poi.frclosed}</td>
-        </tr>
-        <tr>
-          <td>Samstag</td><td>${poi.saopen}</td><td>${poi.saclosed}</td>
-        </tr>
-        <tr>
-          <td>Sonntag</td><td>${poi.soopen}</td><td>${poi.soclosed}</td>
-        </tr>
-      </table>
-    </div>-->
-    <!--<div>
-      <p><h4>Auf einen Blick: </h4l></p>
-    </div>
-    <div>
-      <p>Beschreibung:</p>
-      <p>${poi.description}</p>
-    </div>
-    <div>
-        <p>Online: ${poi.online}</p>
-    </div>
-    <div>
-      <p>Entfernung zur Altstadt: ${poi.distance}</p>
-    </div>
-    <div>
-      <div>
-        <input type="button" value="Auf Map anzeigen" id="addMarkerButton" onclick="buttonMarker(${poi.latitude}, ${poi.longitude}, '${poi.name}');">
-      </div>
-      <table id="geo">
-        <tr>
-          <th class="left">Breitengrad: ${poi.latitude}</th><th class="left">Längengrad: ${poi.longitude}</th>
-        </tr>      
-      </table>
-    </div>  
-    <div id="besonders">
-      <div>
-        <h2>Besondere Angebote: </h2>  
-      </div>          
-      <div>
-        <ul>
-          <li for="vegan" style="${poi.vegan==0?"color:rgb(192, 196, 192);":"color:rgb(6, 157, 6)"}"> Veganes Angebot</li><br>
-          <li for="glutenfree" style="${poi.glutenfree==0?"color:rgb(192, 196, 192);":"color:rgb(255, 165, 0)"}"> Glutenfreies Angebot</li><br>
-          <li for="breakfast" style="${poi.breakfast==0?"color:rgb(192, 196, 192);":"color:rgb(234, 226, 14)"}"> Frühstücksangebot</li><br>
-          <li for="lgbtq" style="${poi.lgbtq==0?"color:rgb(192, 196, 192);":"color:rgb(232, 68, 232)"}"> LGBTQ-Angebote</li><br>
-          <li for="events" style="${poi.events==0?"color:rgb(192, 196, 192);":"color:rgb(66, 66, 236)"}"> Event-Angebote (Konzert, Lesung, Vortrag, Live-Musik u.ä.)</li><br>
-          <li for="happyhour" style="${poi.happyhour==0?"color:rgb(192, 196, 192);":"color:rgb(251, 40, 40)"}"> Happy Hour-Angebote</li><br>
-          <li for="outside" style="${poi.outside==0?"color:rgb(192, 196, 192);":"color:rgb(7, 158, 209)"}"> Außengastro</li><br><br>
-        </ul>
-      </div>
-    </div>-->
   `;
 }
 
@@ -696,7 +625,7 @@ function updateCard() {
   // Füge eine Zeile pro POI hinzu
   for (const poi of cardPoiList) {
 
-    let l_id = poi.id;
+    let l_id = poi.Person;
     //avatar = poi.avatar;
     if (avatar == '') {
       avatar = './img/avatar_cafes.png'; // Hier könnte noch ein Bild geladen werden
@@ -704,21 +633,9 @@ function updateCard() {
     card += getCardRow([      
       "<div class=\"card\">" +
       " <img src=" + avatar + " alt=\"Avatar\" style=\"width:100%\">" +
-      " <div class=\"container\">" + "<h4>" + poi.name + "</h4>" +
+      " <div class=\"container\">" + "<h4>" + poi.Person + "</h4>" +
       "  <p>" + poi.longitude + ", " + poi.latitude + "</p>" +
-      "  <p>" + poi.description + "</p>" +
-      "  <p>" + typeMap[poi.type] + "</p>" +
-      "  <div>" +
-      "    <table id='cards_table'>" + 
-      "      <tr><td><span class='veg' style='color:" + (poi.vegan==1?"rgb(6, 157, 6)":"rgb(192, 196, 192)") + ";'>Vegan</span></td>" + 
-      "      <td><span class=\"glut\" style=\"color:" + (poi.glutenfree==1?"rgb(255, 165, 0)":"rgb(192, 196, 192)") + ";\">Glutenfrei</span></td></tr>" + 
-      "      <<tr><td><span class=\"break\" style=\"color:" + (poi.breakfast==1?"rgb(234, 226, 14)":"rgb(192, 196, 192)") + ";\">Frühstück</span></td>" + 
-      "      <td><span class=\"lgb\" style=\"color:" + (poi.lgbtq==1?"rgb(232, 68, 232)":"rgb(192, 196, 192)") + ";\">LGBTQ</span></td></tr>" + 
-      "      <tr><td><span class=\"ev\" style=\"color:" + (poi.events==1?"rgb(66, 66, 236)":"rgb(192, 196, 192)") + ";\">Events</span></td>" + 
-      "      <td><span class=\"hh\" style=\"color:" + (poi.happyhour==1?"rgb(251, 40, 40)":"rgb(192, 196, 192)") + ";\">Happy Hour</span></td></tr>" + 
-      "      <tr><td><span class=\"out\" style=\"color:" + (poi.outside==1?"rgb(7, 158, 209)":"rgb(192, 196, 192)") + ";\">Außengastro</span></td></tr>" +
-      "    </table>" + 
-      "  </div>" +
+      "  <p>" + poi.gelernterBeruf + "</p>" +
       " </div>" +
       " <div class=\"actions\">" +
       "  <input type=\"button\" class=\"ico_btn_view\" id=\"" + l_id + "poi_bearbeiten\" value=\"Edit\" onclick = \"openTab('updatePoi');setData(" + l_id + ");\">" +

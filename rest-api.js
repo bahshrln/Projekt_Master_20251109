@@ -10,27 +10,27 @@ let corsOptions = {
 }
 
 // SQLite-Datenbankverbindung herstellen
-const db = new sqlite3.Database('C:\Users\britt\Documents\HS Mainz 2025\Master\Projekt_Master_20251109\persona.db');
+const db = new sqlite3.Database('C:\Users\britt\Documents\HS Mainz 2025\Master\Projekt_Master_20251109\locations.db');
 
 // Datenbanktabelle erstellen (falls sie noch nicht existiert)
 if(!db) {
-  db.run(`CREATE TABLE "demografie" (
+  db.run(`CREATE TABLE "Demografie" (
 	"Person"	TEXT,
-	"k.A."	TEXT,
+	"Letter"	TEXT,
 	"Datum"	TEXT,
 	"Haushaltsnetto"	TEXT,
 	"Einkommensart"	TEXT,
-	"Bildungsstand(höchstererreichterSchul-bzw.Hochschulabschluss)"	TEXT,
+	"Bildungsstand"	TEXT,
 	"vereinheitlicht"	TEXT,
 	"gelernterBeruf"	TEXT,
 	"ausgeübterBeruf"	TEXT,
-	"GesamtdauerderErwerbstätigkeit(inJahren)"	TEXT,
+	"GesamtdauerderErwerbstätigkeit"	TEXT,
 	"Alter"	TEXT,
 	"Geschlecht"	TEXT,
 	"Familienstand"	TEXT,
 	"Wohnort"	TEXT,
 	"Wohnart"	TEXT,
-	"Wohndauer(inJahren)"	TEXT,
+	"Wohndauer"	TEXT,
 	"Haushaltsgröße"	TEXT,
 	"Lieblingsfarbe"	TEXT,
 	"Einrichtungsstil"	TEXT,
@@ -42,9 +42,9 @@ if(!db) {
 	"WegeundZieleinkl.Häufigkeit"	TEXT,
 	"Reisen"	TEXT,
 	"Mobilitätsartenvor10Jahren"	TEXT,
-	"Hobbys/Ehrenamt/Freizeitgestaltung"	TEXT,
-	"Konzerte/Theater/Veranstaltungen"	TEXT,
-	"Freunde/Nachbarn"	TEXT,
+	"HobbysEhrenamtFreizeitgestaltung"	TEXT,
+	"KonzerteTheaterVeranstaltungen"	TEXT,
+	"FreundeNachbarn"	TEXT,
 	"SportundBewegung"	TEXT,
 	"Konsum"	TEXT,
 	"Lebensmotto"	TEXT,
@@ -58,7 +58,7 @@ const restApi = express.Router();
 // RESTful API Endpunkt, um alle Locations zu löschen
 restApi.delete('/', cors(corsOptions), (req, res) => {
   console.log('[rest-api.js/delete] Datenbank wird gelöscht');
-  db.run('DELETE FROM demografie', (err) => {
+  db.run('DELETE FROM Demografie', (err) => {
     if (err) {
       res.status(500).json({ error: err });
     } else {
@@ -71,7 +71,7 @@ restApi.delete('/', cors(corsOptions), (req, res) => {
 restApi.delete('/id', cors(corsOptions), (req, res) => {
   console.log(`[rest-api.js/delete] Eintrag ${id} wird gelöscht`);
   const id = req.params.id;
-  db.run('DELETE FROM demografie WHERE id=?', [id], (err) => {
+  db.run('DELETE FROM Demografie WHERE id=?', [id], (err) => {
     if (err) {
       res.status(500).json({ error: err });
     } else {
@@ -87,7 +87,7 @@ restApi.get(`/:id`, cors(corsOptions), (req, res) => {
   const id = req.query.id;
   console.log(`[rest-api.js/getId] Eintrag ${id} wird geholt`);  
   if (id != null) {
-    db.all('SELECT * FROM demografie WHERE id=?', [id], (err, rows) => {
+    db.all('SELECT * FROM Demografie WHERE id=?', [id], (err, rows) => {
       if (err) {
         res.status(500).json({ error: err });
       } else {
@@ -107,9 +107,9 @@ restApi.get('/', (req, res) => {
   if (q && 'search' in q) {
     // Suche mit bestimmten Suchbegriff über Name und Beschreibung mit einer OR-Abfrage, die alles ausgibt mit dem Suchwort
     console.log('[rest-api.js/get] Suche Locations mit Suchstring:', q.search);
-    db.all('SELECT * FROM demografie WHERE ' +
+    db.all('SELECT * FROM Demografie WHERE ' +
       'Person LIKE ? OR Wohnort LIKE ? OR Geschlecht LIKE ? OR Familienstand LIKE ? '+
-      'OR Alter LIKE ? OR Haushaltsgröße LIKE ? OR Bildungsstand(höchstererreichterSchul-bzw.Hochschulabschluss) LIKE ? ORDER BY Person ASC', [
+      'OR Alter LIKE ? OR Haushaltsgröße LIKE ? OR vereinheitlicht LIKE ? ORDER BY Person ASC', [
       `%${q.search}%`,`%${q.search}%`, `%${q.search}%`, 
       `%${q.search}%`, `%${q.search}%`, `%${q.search}%`, `%${q.search}%`
     ], (err, rows) => {
@@ -147,7 +147,7 @@ restApi.get('/', (req, res) => {
   //   });
   } else {
     // Gebe alle Locations zurück
-    db.all('SELECT * FROM demografie ORDER BY Person ASC', (err, rows) => {
+    db.all('SELECT * FROM Demografie ORDER BY Person ASC', (err, rows) => {
       if (err) {
         return res.status(500).json({ error: err });
       } {
@@ -159,9 +159,9 @@ restApi.get('/', (req, res) => {
 });
 
 // RESTful API Endpunkt, um neue Location hinzuzufügen
-restApi.post('/', cors(corsOptions), (req, res) => {
-  const poi = req.body;
-  console.log('[rest-api.js/post] Neuer POI wird hinzugefügt:', poi);
+// restApi.post('/', cors(corsOptions), (req, res) => {
+//   const poi = req.body;
+//   console.log('[rest-api.js/post] Neuer POI wird hinzugefügt:', poi);
 
   // Überprüfen, ob alle erforderlichen Daten vorhanden sind
   // if (!poi.name || !poi.type || !poi.type_label || !poi.street || !poi.plz || !poi.city || !poi.distance   //7
@@ -175,43 +175,43 @@ restApi.post('/', cors(corsOptions), (req, res) => {
   // }
 
   // Eintrag hinzufügen
-  db.run('INSERT INTO locations_geo_bearb (name, type, type_label, street, plz, '+ //5
-    'city, distance, moopen, moclosed, diopen, diclosed, miopen, '+ //7
-    'miclosed, doopen, doclosed, fropen, frclosed, saopen, saclosed, '+  //7
-    'soopen, soclosed, description, tel, online, longitude, latitude, Shape, vegan, '+  //9
-    'glutenfree, breakfast, lgbtq, events, happyhour, outside) '+ //6
-    'VALUES '+
-    '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '+
-    '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '+
-    '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '+
-    '?, ?, ?, ?)', [
-    poi.name, poi.type, poi.type_label, poi.street,
-    poi.plz, poi.city, poi.distance,
-    poi.moopen, poi.moclosed, poi.diopen,
-    poi.diclosed, poi.miopen, poi.miclosed,
-    poi.doopen, poi.doclosed, poi.fropen,
-    poi.frclosed, poi.saopen, poi.saclosed,
-    poi.soopen, poi.soclosed, poi.description,
-    poi.tel, poi.online, poi.longitude,
-    poi.latitude, poi.Shape, poi.vegan, poi.glutenfree,
-    poi.breakfast, poi.lgbtq, poi.events,
-    poi.happyhour, poi.outside
-  ], 
-  console.log( "POI neu: " + poi), (err) => {
-    if (err) {
-      return res.status(500).json({ error: err });
-    } else {
-      return res.json({ message: `Hinzufügen von '${poi.name}' erfolgreich` });
-    }
-  });
-});
+//   db.run('INSERT INTO Demografie (name, type, type_label, street, plz, '+ //5
+//     'city, distance, moopen, moclosed, diopen, diclosed, miopen, '+ //7
+//     'miclosed, doopen, doclosed, fropen, frclosed, saopen, saclosed, '+  //7
+//     'soopen, soclosed, description, tel, online, longitude, latitude, Shape, vegan, '+  //9
+//     'glutenfree, breakfast, lgbtq, events, happyhour, outside) '+ //6
+//     'VALUES '+
+//     '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '+
+//     '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '+
+//     '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '+
+//     '?, ?, ?, ?)', [
+//     poi.name, poi.type, poi.type_label, poi.street,
+//     poi.plz, poi.city, poi.distance,
+//     poi.moopen, poi.moclosed, poi.diopen,
+//     poi.diclosed, poi.miopen, poi.miclosed,
+//     poi.doopen, poi.doclosed, poi.fropen,
+//     poi.frclosed, poi.saopen, poi.saclosed,
+//     poi.soopen, poi.soclosed, poi.description,
+//     poi.tel, poi.online, poi.longitude,
+//     poi.latitude, poi.Shape, poi.vegan, poi.glutenfree,
+//     poi.breakfast, poi.lgbtq, poi.events,
+//     poi.happyhour, poi.outside
+//   ], 
+//   console.log( "POI neu: " + poi), (err) => {
+//     if (err) {
+//       return res.status(500).json({ error: err });
+//     } else {
+//       return res.json({ message: `Hinzufügen von '${poi.name}' erfolgreich` });
+//     }
+//   });
+// });
 
 // RESTful API Endpunkt, um existierende Location zu ändern
-restApi.put('/', (req, res) => {
-  const poi = req.body;
-  const poi_id = req.query.id; console.log("restApi PUT poi_id: " + poi_id);
+// restApi.put('/', (req, res) => {
+//   const poi = req.body;
+//   const poi_id = req.query.id; console.log("restApi PUT poi_id: " + poi_id);
   
-  console.log('[rest-api.js/put] Existierender POI wird geändert:', poi, poi_id);
+//   console.log('[rest-api.js/put] Existierender POI wird geändert:', poi, poi_id);
 
   // Überprüfen, ob alle erforderlichen Daten vorhanden sind
   // if (!poi.name || !poi.type || !poi.type_label || !poi.street || !poi.plz || !poi.city || !poi.distance   //7
@@ -225,31 +225,31 @@ restApi.put('/', (req, res) => {
   // }
 
   // Eintrag ändern
-  db.run('UPDATE locations_geo_bearb SET name=?, type=?, type_label=?, street=?, plz=?, '+                      //5
-    'city=?, distance=?, moopen=?, moclosed=?, diopen=?, diclosed=?, '+                 //6
-    'miopen=?, miclosed=?, doopen=?, doclosed=?, fropen=?, frclosed=?, '+               //6
-    'saopen=?, saclosed=?, soopen=?, soclosed=?, description=?, tel=?, online=?, '+         //7
-    'longitude=?, latitude=?, vegan=?, glutenfree=?, breakfast=?, lgbtq=?, events=?, '+ //7
-    'happyhour=?, outside=? WHERE id=?',                                                //2
-    [poi.name, poi.type, poi.type_label, poi.street,
-    poi.plz, poi.city, poi.distance,
-    poi.moopen, poi.moclosed, poi.diopen,
-    poi.diclosed, poi.miopen, poi.miclosed,
-    poi.doopen, poi.doclosed, poi.fropen,
-    poi.frclosed, poi.saopen, poi.saclosed,
-    poi.soopen, poi.soclosed, poi.description,
-    poi.tel, poi.online, poi.longitude, 
-    poi.latitude, poi.vegan, poi.glutenfree,
-    poi.breakfast, poi.lgbtq, poi.events,
-    poi.happyhour, poi.outside, poi_id], 
-      console.log('POI wird gesucht:', poi, poi_id), (err) => {
-      if (err) {
-        res.status(500).json({ error: err });
-      } else {
-        return res.json({ message: `Ändern von '${poi.name}' erfolgreich` });
-      }
-    });
-});
+//   db.run('UPDATE Demografie SET name=?, type=?, type_label=?, street=?, plz=?, '+                      //5
+//     'city=?, distance=?, moopen=?, moclosed=?, diopen=?, diclosed=?, '+                 //6
+//     'miopen=?, miclosed=?, doopen=?, doclosed=?, fropen=?, frclosed=?, '+               //6
+//     'saopen=?, saclosed=?, soopen=?, soclosed=?, description=?, tel=?, online=?, '+         //7
+//     'longitude=?, latitude=?, vegan=?, glutenfree=?, breakfast=?, lgbtq=?, events=?, '+ //7
+//     'happyhour=?, outside=? WHERE id=?',                                                //2
+//     [poi.name, poi.type, poi.type_label, poi.street,
+//     poi.plz, poi.city, poi.distance,
+//     poi.moopen, poi.moclosed, poi.diopen,
+//     poi.diclosed, poi.miopen, poi.miclosed,
+//     poi.doopen, poi.doclosed, poi.fropen,
+//     poi.frclosed, poi.saopen, poi.saclosed,
+//     poi.soopen, poi.soclosed, poi.description,
+//     poi.tel, poi.online, poi.longitude, 
+//     poi.latitude, poi.vegan, poi.glutenfree,
+//     poi.breakfast, poi.lgbtq, poi.events,
+//     poi.happyhour, poi.outside, poi_id], 
+//       console.log('POI wird gesucht:', poi, poi_id), (err) => {
+//       if (err) {
+//         res.status(500).json({ error: err });
+//       } else {
+//         return res.json({ message: `Ändern von '${poi.name}' erfolgreich` });
+//       }
+//     });
+// });
 
 // RESTful API Endpunkt, um Datenbank zurückzusetzen und mit Beispieldaten
 // zu befüllen
@@ -257,45 +257,38 @@ restApi.get('/reset', cors(corsOptions), (req, res) => {
   console.log('[rest-api.js/reset] Datenbank wird zurückgesetzt');
 
   // Lese lokale JSON-Datei als String und parse zum JS-Objekt
-  const jsonFile = './public/locations_geo_bearb.json';
+  const jsonFile = './public/demografie.json';
   const data = fs.readFileSync(jsonFile, 'utf8');
   const locations = JSON.parse(data);
 
   // Serialisiere die folgenden Schritte
   db.serialize(() => {
     // Lösche Datenbank-Tabelle
-    db.run('DELETE FROM locations_geo_bearb');
+    db.run('DELETE FROM Demografie');
 
     // Bereite das Einfügen von Daten vor
-    const query = 'INSERT INTO locations_geo_bearb (name, type, type_label, street, '+                      //4
-    'plz, city, distance, moopen, moclosed, diopen, diclosed, miopen, '+                  //8
-    'miclosed, doopen, doclosed, fropen, frclosed, saopen, saclosed, soopen, '+           //8
-    'soclosed, description, tel, online, longitude, latitude, vegan, glutenfree, '+           //8
-    'breakfast, lgbtq, events, happyhour, outside) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?'+ //11
-    '?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'+                                                      //10 
-    '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    let insertStmt = db.prepare(query);
+    // const query = 'INSERT INTO locations_geo_bearb (name, type, type_label, street, '+                      //4
+    // 'plz, city, distance, moopen, moclosed, diopen, diclosed, miopen, '+                  //8
+    // 'miclosed, doopen, doclosed, fropen, frclosed, saopen, saclosed, soopen, '+           //8
+    // 'soclosed, description, tel, online, longitude, latitude, vegan, glutenfree, '+           //8
+    // 'breakfast, lgbtq, events, happyhour, outside) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?'+ //11
+    // '?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'+                                                      //10 
+    // '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    // let insertStmt = db.prepare(query);
 
     // Iteriere durch die JSON-Daten und füge sie in die Datenbank ein
-    locations.forEach(poi => {
-      insertStmt.run([poi.name, poi.type, poi.type_label, poi.street,
+    Demografie.forEach(poi => {
+      insertStmt.run([poi.Person, poi.type, poi.type_label, poi.street,
         poi.plz, poi.city, poi.distance,
         poi.moopen, poi.moclosed, poi.diopen,
-        poi.diclosed, poi.miopen, poi.miclosed,
-        poi.doopen, poi.doclosed, poi.fropen,
-        poi.frclosed, poi.saopen, poi.saclosed,
-        poi.soopen, poi.soclosed, poi.description,
-        poi.tel, poi.online, poi.longitude, 
-        poi.latitude, poi.vegan, poi.glutenfree,
-        poi.breakfast, poi.lgbtq, poi.events,
-        poi.happyhour, poi.outside]);
+        poi.diclosed]);
     });
 
     // Schließe die vorbereitete Anweisung
     insertStmt.finalize();
 
     // Gebe zurückgesetzte Daten der DB zurück
-    db.all('SELECT * FROM locations_geo_bearb', (err, rows) => {
+    db.all('SELECT * FROM Demografie', (err, rows) => {
       if (err) {
         res.status(500).json({ error: err });
       } else {
