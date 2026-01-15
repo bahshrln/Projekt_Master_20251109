@@ -8,10 +8,10 @@ let corsOptions = {
   origin: 'http://localhost:53000',
   optionsSuccessStatus: 200 
 }
-//"C:\Users\britt\Documents\SQlite\Masterprojekt_20251101.db"
+//"C:\Users\britt\Documents\HS Mainz 2025\Projekt_Cafes_in_Mainz\Projekt_Cafes_in_Mainz_neu\locations.db"
 //C:\Users\britt\Documents\HS Mainz 2025\Master\Projekt_Master_20251109\locations.db
 // SQLite-Datenbankverbindung herstellen
-const db = new sqlite3.Database('C:\Users\britt\Documents\HS Mainz 2025\Master\Projekt_Master_20251109\locations.db');
+const db = new sqlite3.Database('C:\Users\britt\Documents\HS Mainz 2025\Projekt_Cafes_in_Mainz\Projekt_Cafes_in_Mainz_neu\locations.db');
 
 // Datenbanktabelle erstellen (falls sie noch nicht existiert)
 if(!db) {
@@ -57,47 +57,47 @@ if(!db) {
 const restApi = express.Router();
 
 // RESTful API Endpunkt, um alle Locations zu löschen
-restApi.delete('/', cors(corsOptions), (req, res) => {
-  console.log('[rest-api.js/delete] Datenbank wird gelöscht');
-  db.run('DELETE FROM Demografie', (err) => {
-    if (err) {
-      res.status(500).json({ error: err });
-    } else {
-      res.json({ message: 'Löschen aller Daten erfolgreich' });
-    }
-  });
-});
+// restApi.delete('/', cors(corsOptions), (req, res) => {
+//   console.log('[rest-api.js/delete] Datenbank wird gelöscht');
+//   db.run('DELETE FROM Demografie', (err) => {
+//     if (err) {
+//       res.status(500).json({ error: err });
+//     } else {
+//       res.json({ message: 'Löschen aller Daten erfolgreich' });
+//     }
+//   });
+// });
 
 // RESTful API Endpunkt, um bestimmte Location mit id zu löschen
-restApi.delete('/id', cors(corsOptions), (req, res) => {
-  console.log(`[rest-api.js/delete] Eintrag ${id} wird gelöscht`);
-  const id = req.params.id;
-  db.run('DELETE FROM Demografie WHERE id=?', [id], (err) => {
-    if (err) {
-      res.status(500).json({ error: err });
-    } else {
-      res.json({ message: `Löschen von ${id} erfolgreich` });
-    }
-  });
-});
+// restApi.delete('/id', cors(corsOptions), (req, res) => {
+//   console.log(`[rest-api.js/delete] Eintrag ${id} wird gelöscht`);
+//   const id = req.params.id;
+//   db.run('DELETE FROM Demografie WHERE id=?', [id], (err) => {
+//     if (err) {
+//       res.status(500).json({ error: err });
+//     } else {
+//       res.json({ message: `Löschen von ${id} erfolgreich` });
+//     }
+//   });
+// });
 
 
 
 // RESTful API Endpunkt, um Location mit id zu lesen
-restApi.get(`/:id`, cors(corsOptions), (req, res) => {
-  const id = req.query.id;
-  console.log(`[rest-api.js/getId] Eintrag ${id} wird geholt`);  
-  if (id != null) {
-    db.all('SELECT * FROM Demografie WHERE id=?', [id], (err, rows) => {
-      if (err) {
-        res.status(500).json({ error: err });
-      } else {
-        console.log('[rest-api.js/getId] Datensatz mit id gelesen:', rows.length);
-        res.json(rows);
-      }
-  });
-  }
-});
+// restApi.get(`/:id`, cors(corsOptions), (req, res) => {
+//   const id = req.query.id;
+//   console.log(`[rest-api.js/getId] Eintrag ${id} wird geholt`);  
+//   if (id != null) {
+//     db.all('SELECT * FROM Demografie WHERE id=?', [id], (err, rows) => {
+//       if (err) {
+//         res.status(500).json({ error: err });
+//       } else {
+//         console.log('[rest-api.js/getId] Datensatz mit id gelesen:', rows.length);
+//         res.json(rows);
+//       }
+//   });
+//   }
+// });
 
   
 
