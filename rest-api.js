@@ -279,10 +279,16 @@ restApi.get('/reset', cors(corsOptions), (req, res) => {
 
     // Iteriere durch die JSON-Daten und füge sie in die Datenbank ein
     Demografie.forEach(poi => {
-      insertStmt.run([poi.Person, poi.type, poi.type_label, poi.street,
-        poi.plz, poi.city, poi.distance,
-        poi.moopen, poi.moclosed, poi.diopen,
-        poi.diclosed]);
+      insertStmt.run([poi.Person, poi.Letter, poi.Datum, 
+        poi.Haushaltsnetto, poi.Einkommensart, poi.Bildungsstand, 
+        poi.vereinheitlicht, poi.gelernterBeruf, poi.ausgeübterBeruf, 
+        poi.GesamtdauerderErwerbstätigkeit, poi.Alter, poi.Geschlecht, 
+        poi.Familienstand, poi.Wohnort, poi.Wohnart, poi.Wohndauer, poi.Haushaltsgröße, 
+        poi.Lieblingsfarbe, poi.Einrichtungsstil, poi.Mediennutzung, poi.MusikLiteratur, 
+        poi.GesundheitundEinschränkung, poi.BevorzugteMobilität, poi.Mobilitätsarten, 
+        poi.WegeundZieleinkl.Häufigkeit, poi.Reisen, poi.Mobilitätsartenvor10Jahren, 
+        poi.HobbysEhrenamtFreizeitgestaltung, poi.KonzerteTheaterVeranstaltungen, 
+        poi.FreundeNachbarn, poi.SportundBewegung, poi.Konsum, poi.Lebensmotto]);
     });
 
     // Schließe die vorbereitete Anweisung
